@@ -1,6 +1,7 @@
 package com.gcs.aol.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,7 +98,30 @@ public class GjManagerImpl extends GenericManagerImpl<Gj, GjDAO> implements IGjM
 	}
 
 	private Map<String, List<Gj>> groupByShowDate(List<Gj> gjList) {
-		
+	    Map<String,List<Gj>> map = initMap();
+	    for (Gj gj : gjList) {
+			Date showStartDate = DateUtil.getString(gj.getShowStartDate(), "yyyy-MM-dd HH:mm:ss");
+			Date showEndDate = DateUtil.getString(gj.getShowEndDate(), "yyyy-MM-dd HH:mm:ss");
+			Date nowDate = new Date();
+			if(nowDate.after(showStartDate) && nowDate.before(showEndDate)) {
+				map.get("now").add(gj);
+			}
+			else if (nowDate.after(showEndDate)) {
+				map.get("before").add(gj);
+			}
+			else if (nowDate.before(showStartDate)) {
+				map.get("after").add(gj);
+			}
+		}
+	    
 		return null;
+	}
+
+	private Map<String,List<Gj>> initMap() {
+		Map<String,List<Gj>> map = new HashMap<String,List<Gj>>();
+		map.put("now",new ArrayList<Gj>());
+		map.put("after",new ArrayList<Gj>());
+		map.put("before",new ArrayList<Gj>());
+		return map;
 	}
 }
