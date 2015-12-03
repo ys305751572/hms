@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>合美术馆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<link href="css/slick.css" rel="stylesheet" type="text/css"/>
+<link href="css/app-common.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="wrapper">
+	<!-- banner -->
+	<div class="scrent">
+		<div><a href=""><img src="img/ac1.jpg" width="100%" /></a></div>
+		<div><a href=""><img src="img/ac2.jpg" width="100%" /></a></div>
+		<div><a href=""><img src="img/ac3.jpg" width="100%" /></a></div>
+		<div><a href=""><img src="img/ac4.jpg" width="100%" /></a></div>
+		<div><a href=""><img src="img/ac5.jpg" width="100%" /></a></div>
+		<div><a href=""><img src="img/ac6.jpg" width="100%" /></a></div>		
+	</div>
+
+	<div class="listsection bigimgtype">
+		<h3 class="rel"><i class="iicon i-dot"></i>当前展览</h3>
+		<ul class="list_ul clearfix type4">
+			<li>
+				<a href="">
+					<img src="img/ac1.jpg" alt="" />
+				</a>					
+				<p class="showtime">展出时间<br />2015.08.05</p>			
+			</li>
+			<li>
+				<a href="">
+					<img src="img/ac6.jpg" alt="" />
+				</a>					
+				<p class="showtime">展出时间<br />2015.08.05</p>			
+			</li>
+			<li>
+				<a href="">
+					<img src="img/ac3.jpg" alt="" />
+				</a>					
+				<p class="showtime">展出时间<br />2015.08.05</p>			
+			</li>
+		</ul>
+		<h3 class="rel"><i class="iicon i-dot"></i>展览预告</h3>
+		<ul class="list_ul clearfix type4">
+			<li>
+				<a href="">
+					<img src="img/ac5.jpg" alt="" />
+				</a>					
+				<p class="showtime">展出时间<br />2015.08.05</p>			
+			</li>
+			<li>
+				<a href="">
+					<img src="img/ac4.jpg" alt="" />
+				</a>					
+				<p class="showtime">展出时间<br />2015.08.05</p>			
+			</li>
+			<li>
+				<a href="">
+					<img src="img/ac3.jpg" alt="" />
+				</a>					
+				<p class="showtime">展出时间<br />2015.08.05</p>			
+			</li>
+		</ul>
+		<h3 class="rel"><i class="iicon i-dot"></i>展览回顾</h3>
+		<ul class="list_ul clearfix type4">
+			<li>
+				<a href="">
+					<img src="img/ac1.jpg" alt="" />
+				</a>					
+				<p class="showtime">展出时间<br />2015.08.05</p>			
+			</li>
+			<li>
+				<a href="">
+					<img src="img/ac2.jpg" alt="" />
+				</a>					
+				<p class="showtime">展出时间<br />2015.08.05</p>			
+			</li>
+			<li>
+				<a href="">
+					<img src="img/ac6.jpg" alt="" />
+				</a>					
+				<p class="showtime">展出时间<br />2015.08.05</p>			
+			</li>
+		</ul>
+	</div>	
+</div>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/slick.min.js"></script>
+<script>
+$(function(){
+	$('.scrent').slick({
+	  	centerMode: true,
+	 	centerPadding: '30%',
+	 	slidesToShow: 3,
+	 	autoplay:true,
+	 	arrows : false,
+		responsive: [
+	    {
+	      	breakpoint: 768,
+	      	settings: {
+	        	arrows: false,
+	        	centerMode: true,
+	        	centerPadding: '30%',
+	       	 	slidesToShow: 3
+	      	}
+	    },
+	    {
+
+	      	breakpoint: 480,
+	      	settings: {
+	        	arrows: false,
+	        	centerMode: true,
+	        	centerPadding: '30%',
+	        	slidesToShow: 1
+	      }
+	    }
+	  ]
+	});
+});
+</script>
+</body>
+</html>

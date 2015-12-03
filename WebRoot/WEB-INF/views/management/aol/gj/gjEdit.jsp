@@ -115,7 +115,6 @@
 			<div class="box span12">
 				<div class="box-header well z-h2">
 					<h2><i class="icon-film"></i> 公教-展览</h2>
-					
 					<jsp:include page="/WEB-INF/views/backDiv.jsp" flush="true">
 						<jsp:param name="url" value="${contextPath}/hms/gj/listPage"/>
 					</jsp:include>

@@ -15,4 +15,5 @@ public interface IGjManager extends GenericManager<Gj>{
 	Map<String,List<Gj>> findGjList(Integer gjType);
 	
 	Map<String,List<Gj>> findZlList();
+	
 }

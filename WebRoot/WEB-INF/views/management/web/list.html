@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>合美术馆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<link href="css/app-common.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="wrapper">
+	<!-- banner -->
+	<div id="mySwipe" class="proimg_wrap">
+		<ul>
+			<li><a href=""><img src="img/banner1.jpg" width="100%" /></a></li>
+			<li><a href=""><img src="img/banner2.jpg" width="100%" /></a></li>
+			<li><a href=""><img src="img/banner1.jpg" width="100%" /></a></li>
+		</ul>
+		<div class="swipedot"></div>
+	</div>
+
+	<div class="listsection">
+		<h3 class="rel"><i class="iicon i-dot"></i>当前展览</h3>
+		<ul class="list_ul type2">
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/ac1.jpg" alt="" />
+					<div class="r-part">
+						<h4>2015青年雕塑邀请展</h4>
+						<p class="showtime">展出时间：2015.08.05</p>
+						<p class="intro">2015年9月11日下午3点，由武汉市洪山区政府主办、武汉光谷联合协办、武汉合美术馆</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/ac2.jpg" alt="" />
+					<div class="r-part">
+						<h4>2015青年雕塑邀请展</h4>
+						<p class="showtime">展出时间：2015.08.05</p>
+						<p class="intro">2015年9月11日下午3点，由武汉市洪山区政府主办、武汉光谷联合协办、武汉合美术馆</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+		<h3 class="rel"><i class="iicon i-dot"></i>展览预告</h3>
+		<ul class="list_ul type2">
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/ac3.jpg" alt="" />
+					<div class="r-part">
+						<h4>2015青年雕塑邀请展</h4>
+						<p class="showtime">展出时间：2015.08.05</p>
+						<p class="intro">2015年9月11日下午3点，由武汉市洪山区政府主办、武汉光谷联合协办、武汉合美术馆</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+		<h3 class="rel"><i class="iicon i-dot"></i>展览回顾</h3>
+		<ul class="list_ul type2">
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/ac4.jpg" alt="" />
+					<div class="r-part">
+						<h4>2015青年雕塑邀请展</h4>
+						<p class="showtime">展出时间：2015.08.05</p>
+						<p class="intro">2015年9月11日下午3点，由武汉市洪山区政府主办、武汉光谷联合协办、武汉合美术馆</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/ac5.jpg" alt="" />
+					<div class="r-part">
+						<h4>2015青年雕塑邀请展</h4>
+						<p class="showtime">展出时间：2015.08.05</p>
+						<p class="intro">2015年9月11日下午3点，由武汉市洪山区政府主办、武汉光谷联合协办、武汉合美术馆</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/ac6.jpg" alt="" />
+					<div class="r-part">
+						<h4>2015青年雕塑邀请展</h4>
+						<p class="showtime">展出时间：2015.08.05</p>
+						<p class="intro">2015年9月11日下午3点，由武汉市洪山区政府主办、武汉光谷联合协办、武汉合美术馆</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/ac7.jpg" alt="" />
+					<div class="r-part">
+						<h4>2015青年雕塑邀请展</h4>
+						<p class="showtime">展出时间：2015.08.05</p>
+						<p class="intro">2015年9月11日下午3点，由武汉市洪山区政府主办、武汉光谷联合协办、武汉合美术馆</p>
+					</div>
+				</a>
+			</li>		
+		</ul>
+	</div>	
+</div>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/swipe.js"></script>
+<script>
+$(function(){
+	//banner
+	var banner_len = $('.proimg_wrap').find('ul li').length;
+	if( banner_len <= 1 ) return;				
+	for(var i=0; i < banner_len; i++){
+		$('#mySwipe').find('.swipedot').append("<span></span>");
+	}		
+	$('#mySwipe').find('.swipedot span').eq(0).addClass('current');
+	var elem = document.getElementById('mySwipe');
+	window.mySwipe = new Swipe(elem, {
+	  startSlide: 0,
+	  auto: 3000,
+	  continuous: true,
+	  // disableScroll: true,
+	  // stopPropagation: true,
+	  callback: function(index, element) {
+		$(elem).find('.swipedot span.current').removeClass('current');
+		$(elem).find('.swipedot span').eq(index).addClass('current');
+	  },
+	  transitionEnd: function(index, element) {}
+	});
+});
+</script>
+</body>
+</html>

@@ -104,4 +104,9 @@ public class ImageadsManagerImpl extends GenericManagerImpl<Imageads, ImageadsDA
 		em.close();
 		return count;
 	}
+
+	@Override
+	public List<Imageads> findAdsList() {
+		return queryTop("createDate", "adsState", "1", false, 3);
+	}
 }

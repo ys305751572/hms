@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>合美术馆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<link href="css/app-common.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="wrapper">
+	<!-- banner -->
+	<div id="mySwipe" class="proimg_wrap">
+		<ul>
+			<li><a href=""><img src="img/banner1.jpg" width="100%" /></a></li>
+			<li><a href=""><img src="img/banner2.jpg" width="100%" /></a></li>
+			<li><a href=""><img src="img/banner1.jpg" width="100%" /></a></li>
+		</ul>
+		<div class="swipedot"></div>
+	</div>
+
+	<div class="linksection">
+		<ul class="clearfix">
+			<li><a href=""><i class="iicon icon1"></i><p>超级课堂</p></a></li>
+			<li><a href=""><i class="iicon icon2"></i><p>移动美术馆</p></a></li>
+			<li><a href=""><i class="iicon icon3"></i><p>特别活动</p></a></li>
+			<li><a href=""><i class="iicon icon4"></i><p>校园大使</p></a></li>
+			<li><a href=""><i class="iicon icon5"></i><p>蒲公英计划</p></a></li>
+			<li><a href=""><i class="iicon icon6"></i><p>其他</p></a></li>
+		</ul>
+	</div>
+
+	<div class="listsection">
+		<h3 class="rel"><i class="iicon i-dot"></i>超级课堂<a href="" class="abs more">更多 <i class="iicon i-arrow"></i></a></h3>
+		<ul class="list_ul">
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/pro.jpg" alt="" />
+					<div class="r-part">
+						<h4>“第一届联合·6个展”</h4>
+						<p class="intro">在这6位艺术家的作品中，每个人的创作趣味和审美经</p>
+						<p class="tr">2015.11.01</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/pro.jpg" alt="" />
+					<div class="r-part">
+						<h4>“第一届联合·6个展”</h4>
+						<p class="intro">在这6位艺术家的作品中，每个人的创作趣味和审美经</p>
+						<p class="tr">2015.11.01</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/pro.jpg" alt="" />
+					<div class="r-part">
+						<h4>“第一届联合·6个展”</h4>
+						<p class="intro">在这6位艺术家的作品中，每个人的创作趣味和审美经</p>
+						<p class="tr">2015.11.01</p>
+					</div>
+				</a>
+			</li>			
+		</ul>
+	</div>
+
+	<div class="listsection">
+		<h3 class="rel"><i class="iicon i-dot"></i>移动美术馆<a href="" class="abs more">更多 &gt;</a></h3>
+		<ul class="list_ul">
+			<li>
+				<a class="clearfix" href="">
+					<img class="l-img" src="img/pro2.jpg" alt="" />
+					<div class="r-part">
+						<h4>“第一届联合·6个展”</h4>
+						<p class="intro">在这6位艺术家的作品中，每个人的创作趣味和审美经</p>
+						<p class="tr">2015.11.01</p>
+					</div>
+				</a>
+			</li>					
+		</ul>
+	</div>
+</div>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/swipe.js"></script>
+<script>
+$(function(){
+	//banner
+	var banner_len = $('.proimg_wrap').find('ul li').length;
+	if( banner_len <= 1 ) return;				
+	for(var i=0; i < banner_len; i++){
+		$('#mySwipe').find('.swipedot').append("<span></span>");
+	}		
+	$('#mySwipe').find('.swipedot span').eq(0).addClass('current');
+	var elem = document.getElementById('mySwipe');
+	window.mySwipe = new Swipe(elem, {
+	  startSlide: 0,
+	  auto: 3000,
+	  continuous: true,
+	  // disableScroll: true,
+	  // stopPropagation: true,
+	  callback: function(index, element) {
+		$(elem).find('.swipedot span.current').removeClass('current');
+		$(elem).find('.swipedot span').eq(index).addClass('current');
+	  },
+	  transitionEnd: function(index, element) {}
+	});
+});
+</script>
+</body>
+</html>

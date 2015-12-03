@@ -22,4 +22,6 @@ public interface IImageadsManager extends GenericManager<Imageads> {
 	 * @return
 	 */
 	public List<Imageads> adsListByLoginuser(String loginuser_id);
+	
+	public List<Imageads> findAdsList();
 }

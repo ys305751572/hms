@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import com.gcs.aol.dao.GjDAO;
 import com.gcs.aol.entity.Gj;
+import com.gcs.aol.entity.Imageads;
 import com.gcs.aol.service.IGjManager;
 import com.gcs.sysmgr.service.impl.GenericManagerImpl;
 import com.gcs.utils.DateUtil;
@@ -76,14 +77,14 @@ public class GjManagerImpl extends GenericManagerImpl<Gj, GjDAO> implements IGjM
 	private Map<String, List<Gj>> groupByGjType(List<Gj> gjList) {
 		Map<String,List<Gj>> map = new HashMap<String,List<Gj>>();
 		for (Gj gj : gjList) {
-			List<Gj> list = map.get(gj.getGjType().intValue() + "");
+			List<Gj> list = map.get("gj" + gj.getGjType().intValue());
 			if(list != null && list.size() > 0) {
 				list.add(gj);
 			}
 			else {
 				list = new ArrayList<Gj>();
 				list.add(gj);
-				map.put("" + gj.getGjType().intValue(), list);
+				map.put("gj" + gj.getGjType().intValue(), list);
 			}
 		}
 		return map;

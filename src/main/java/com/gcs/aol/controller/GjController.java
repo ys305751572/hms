@@ -2,6 +2,8 @@ package com.gcs.aol.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,7 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.gcs.aol.entity.Attach;
 import com.gcs.aol.entity.Gj;
+import com.gcs.aol.entity.Imageads;
 import com.gcs.aol.service.IGjManager;
+import com.gcs.aol.service.IImageadsManager;
 import com.gcs.aol.service.impl.GjManagerImpl;
 import com.gcs.aol.utils.CommonUtils;
 import com.gcs.aol.vo.MsgJsonReturn;
@@ -38,8 +42,13 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 	private static final String GJ_EDIT = "/management/aol/gj/gjEdit";
 	private static final String GJ_DETAIL = "/management/aol/gj/gjDetail";
 
+	private static final String WEB_INDEX = "/management/web/index2";
+	
 	@Autowired
 	private IGjManager manager;
+	
+	@Autowired
+	private IImageadsManager imageManager;
 
 	/**
 	 * 跳转列表页面
@@ -176,21 +185,27 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 	 * @param gjType
 	 * @return
 	 */
-	@RequestMapping("web/findGjList")
-	@ResponseBody
-	public JSONResponse findGjList(@RequestParam(value="type",required = false) Integer type
-								  ,@RequestParam(value = "gjType", required = false) Integer gjType) {
+	@RequestMapping(value = "web/findGjList", method = RequestMethod.GET)
+	public String findGjList(@RequestParam(value="type",required = false) Integer type
+								  ,@RequestParam(value = "gjType", required = false) Integer gjType
+								  ,Model model) {
 		
+		Map<String,List<Gj>> map = null;
 		if(type == 1) {
 			// 公教
+			map = manager.findGjList(gjType);
 		}
 		else if (type == 2) {
 			// 展览
-			
+			map = manager.findZlList();
 		}
+		model.addAttribute("map", map);
 		
-		return null;
+		List<Imageads> imagesList = imageManager.findAdsList();
+		Map<String,List<Imageads>> adsMap = new HashMap<String,List<Imageads>>();
+		adsMap.put("list", imagesList);
+		model.addAttribute("adsMap", adsMap);
+		
+		return WEB_INDEX;
 	}
-	
-	
 }
