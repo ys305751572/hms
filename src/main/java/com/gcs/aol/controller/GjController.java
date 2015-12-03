@@ -1,7 +1,11 @@
 package com.gcs.aol.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -11,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.gcs.aol.entity.Attach;
 import com.gcs.aol.entity.Gj;
 import com.gcs.aol.service.IGjManager;
 import com.gcs.aol.service.impl.GjManagerImpl;
+import com.gcs.aol.utils.CommonUtils;
 import com.gcs.aol.vo.MsgJsonReturn;
 import com.gcs.sysmgr.controller.GenericEntityController;
 import com.gcs.sysmgr.vo.PageParameters;
@@ -27,9 +34,9 @@ import com.gcs.utils.PageUtil;
 @Controller
 public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>{
 
-	private static final String USER_LIST = "/management/aol/users/usersList";
-	private static final String USER_EDIT = "/management/aol/users/usersEdit";
-	private static final String USER_DETAIL = "/management/aol/users/usersDetail";
+	private static final String GJ_LIST = "/management/aol/gj/gjList";
+	private static final String GJ_EDIT = "/management/aol/gj/gjEdit";
+	private static final String GJ_DETAIL = "/management/aol/gj/gjDetail";
 
 	@Autowired
 	private IGjManager manager;
@@ -41,7 +48,7 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 	 */
 	@RequestMapping(value = "listPage", method = RequestMethod.GET)
 	public String listPage() {
-		return USER_LIST;
+		return GJ_LIST;
 	}
 
 	/**
@@ -51,7 +58,7 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 	 */
 	@RequestMapping(value = "addPage", method = RequestMethod.GET)
 	public String addPage() {
-		return USER_EDIT;
+		return GJ_EDIT;
 	}
 
 	/**
@@ -62,11 +69,11 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 	 * @return
 	 */
 	@RequestMapping(value = "editPage", method = RequestMethod.GET)
-	public String editPage(@RequestParam("userId") Integer id, Model model) {
+	public String editPage(@RequestParam("gjId") Long id, Model model) {
 
 		Gj gj = manager.queryByPK(id);
 		model.addAttribute("gj", gj);
-		return USER_EDIT;
+		return GJ_EDIT;
 	}
 
 	/**
@@ -77,11 +84,11 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 	 * @return
 	 */
 	@RequestMapping(value = "detailPage", method = RequestMethod.GET)
-	public String detailPage(@RequestParam("userId") String id, Model model) {
+	public String detailPage(@RequestParam("gjId") Long id, Model model) {
 
 		Gj gj = manager.queryByPK(id);
 		model.addAttribute("gj", gj);
-		return USER_DETAIL;
+		return GJ_DETAIL;
 	}
 
 	/**
@@ -91,9 +98,28 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 	 * @return
 	 */
 	@RequestMapping(value = "edit", method = RequestMethod.POST)
-	public String saveOrUpdate(Gj gj) {
+	public String saveOrUpdate(Gj gj,MultipartFile imageFile,HttpServletRequest request) {
+		
+		Gj _gj = null;
+		if(gj.getId() != null) {
+			_gj = manager.queryByPK(gj.getId());
+		}
+		else {
+			gj.setCreateDate(new Date());
+		}
+		
+		if(imageFile!=null&&imageFile.getSize()>0){
+			String webRoot = request.getSession().getServletContext().getRealPath("");
+			Attach attach  = CommonUtils.uploadAttach(imageFile, webRoot, "//upload//dev//",null);
+			if(StringUtils.isNotBlank(attach.getAttachId()))
+				gj.setImage("//upload//dev//"+attach.getAttachName());
+		}
+		
+		if(_gj != null && StringUtils.isNotBlank(_gj.getImage()) && StringUtils.isBlank(gj.getImage())) {
+			gj.setImage(_gj.getImage());
+		}
 		manager.save(gj);
-		return USER_LIST;
+		return GJ_LIST;
 	}
 
 	/**
@@ -104,12 +130,26 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 	 */
 	@RequestMapping(value = "delete", method = RequestMethod.POST)
 	@ResponseBody
-	public MsgJsonReturn delete(@RequestParam("userId") Integer userId) {
-		manager.deleteByPK(userId);
+	public MsgJsonReturn delete(@RequestParam("gjId") Long gjId) {
+		manager.deleteByPK(gjId);
 		return new MsgJsonReturn(true, "删除成功");
 	}
 
+	/**
+	 * 发布
+	 * @param gjId
+	 * @return
+	 */
+	@RequestMapping(value = "publish", method = RequestMethod.GET)
+	public String publish(@RequestParam("gjId") Long gjId) {
+		Gj gj = manager.queryByPK(gjId);
+		gj.setIsList(1);
+		manager.save(gj);
+		return GJ_LIST;
+	}
+	
 	@RequestMapping(value = "findAll", method = RequestMethod.POST)
+	@ResponseBody
 	public JSONResponse findAll(@RequestBody JSONParam[] params) {
 
 		HashMap<String, String> paramMap = (HashMap<String, String>) convertToMap(params);
@@ -119,6 +159,9 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 			Gj u = new Gj();
 			u.setTitle(paramMap.get("title"));
 			u.setContent(paramMap.get("content"));
+			u.setType(StringUtils.isNotBlank( paramMap.get("type")) ? Integer.parseInt(paramMap.get("type")) : null );
+			u.setIsList(StringUtils.isNotBlank( paramMap.get("isList")) ? Integer.parseInt(paramMap.get("isList")) : null );
+			
 			gjPage = manager.findAll(u, pp.getStart(), pp.getLength());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -126,4 +169,28 @@ public class GjController extends GenericEntityController<Gj, Gj, GjManagerImpl>
 		return successed(new DataTableReturnObject(gjPage.getTotalElements(), gjPage.getTotalElements(),
 				pp.getSEcho(), gjPage.getContent()));
 	}
+	
+	/**
+	 * 微信页面访问公教展览列表
+	 * @param type
+	 * @param gjType
+	 * @return
+	 */
+	@RequestMapping("web/findGjList")
+	@ResponseBody
+	public JSONResponse findGjList(@RequestParam(value="type",required = false) Integer type
+								  ,@RequestParam(value = "gjType", required = false) Integer gjType) {
+		
+		if(type == 1) {
+			// 公教
+		}
+		else if (type == 2) {
+			// 展览
+			
+		}
+		
+		return null;
+	}
+	
+	
 }

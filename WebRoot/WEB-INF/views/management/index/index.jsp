@@ -314,7 +314,35 @@
 				
 				</c:when> 
 				<c:when test="${loginUser.userType == 99}">
-					<%-- 总公司权限 --%> 
+				<!--  -->
+					<li id="menu1">
+                        <a href="#" name="firstMenu"><span class="aol aol-users"></span> 用户管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li id="menu1_1" onclick="changeMenu(this.id,'用户管理&nbsp;>&nbsp;用户信息查询')">
+                                <a href="${contextPath}/management/aoluser/userslist" target="mainIFrame">用户信息查询</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li id="menu2">
+                        <a href="#" name="firstMenu"><span class="aol aol-users"></span> 公教-展览管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li id="menu2_1" onclick="changeMenu(this.id,'公教-展览管理&nbsp;>&nbsp;公教-展览信息查询')">
+                                <a href="${contextPath}/hms/gj/listPage" target="mainIFrame">公教-展览信息查询</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li id="menu3">
+                        <a href="#" name="firstMenu"><span class="aol aol-agent"></span> 广告管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li id="menu3_1" onclick="changeMenu(this.id,'广告管理&nbsp;>&nbsp;广告信息查询')">
+                                <a href="${contextPath}/management/imageads/adslist" target="mainIFrame">图片广告管理</a>
+                            </li>
+                        </ul>
+                    </li>
+				
+					<%-- 总公司权限
 					<li id="menu1">
                         <a href="#" name="firstMenu"><span class="aol aol-healthy"></span> 测量结果<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -443,6 +471,7 @@
                             </li>
                         </ul>
                     </li>
+                     --%> 
 				</c:when>  
 				<c:otherwise>  
 				

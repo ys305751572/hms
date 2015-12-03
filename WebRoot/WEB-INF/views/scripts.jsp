@@ -6,6 +6,7 @@
 <link href="${contextPath}/resources/css/buttons.css" rel="stylesheet" type="text/css" />
 <link href="${contextPath}/resources/css/demo_table.css" rel="stylesheet" type="text/css" />
 <link href="${contextPath}/resources/css/czInvesReview.css" rel="stylesheet" type="text/css" />
+<link href="${contextPath}/resources/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>

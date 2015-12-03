@@ -40,9 +40,33 @@ public class Gj extends IdEntity{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDate;
 	
-	@Column(name = "show_date")
-	@Temporal(TemporalType.TIMESTAMP.TIMESTAMP)
-	private Date showDate;
+	@Column(name = "show_start_date")
+	private String showStartDate;
+	
+	@Column(name = "show_end_date")
+	private String showEndDate;
+
+	@Column(name = "is_list")
+	private Integer isList; // 是否发布 -1:未发布 1:已发布
+	
+	@Column(name = "gj_type")
+	private Integer gjType = 0;
+	
+	public Integer getGjType() {
+		return gjType;
+	}
+
+	public void setGjType(Integer gjType) {
+		this.gjType = gjType;
+	}
+
+	public Integer getIsList() {
+		return isList;
+	}
+
+	public void setIsList(Integer isList) {
+		this.isList = isList;
+	}
 
 	public String getTitle() {
 		return title;
@@ -92,11 +116,19 @@ public class Gj extends IdEntity{
 		this.createDate = createDate;
 	}
 
-	public Date getShowDate() {
-		return showDate;
+	public String getShowStartDate() {
+		return showStartDate;
 	}
 
-	public void setShowDate(Date showDate) {
-		this.showDate = showDate;
+	public void setShowStartDate(String showStartDate) {
+		this.showStartDate = showStartDate;
+	}
+
+	public String getShowEndDate() {
+		return showEndDate;
+	}
+
+	public void setShowEndDate(String showEndDate) {
+		this.showEndDate = showEndDate;
 	}
 }

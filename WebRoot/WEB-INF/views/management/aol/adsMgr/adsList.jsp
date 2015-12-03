@@ -70,7 +70,7 @@ Date.prototype.format = function(format){
 							    {'text':'描述','dataIndex':'adsDesc','render':adsDescRender,'width':'250px'},
 							    {'text':'广告链接','dataIndex':'adsLink','render':adsLinkRender,'width':'200px'},
 							    {'text':'状态','dataIndex':'adsState','render':adsStateRender,'width':'60px'},
-							    {'text':'代理商名称','dataIndex':'bak4','width':'60px'},
+							    {'text':'发布人','dataIndex':'bak4','width':'60px'},
 							    {'text':'时间','dataIndex':'createTime','render':createtimeRender,'width':'100px'}
 							    ];
 				var arrayObj = [];
@@ -203,7 +203,13 @@ Date.prototype.format = function(format){
 						return;
 					} else {
 						if(dataTableObj.getSelectedRow().adsState == 0){
-							window.location.href = "${contextPath}/management/imageads/publishads?imageadsId="+dataTableObj.getSelectedRow().imageadsId;
+							var imageadsId = dataTableObj.getSelectedRow().imageadsId;
+							$.post("${contextPath}/management/imageads/doPublishAds",{"imageadsId":imageadsId},function(result){
+								if(result.success){
+									searchBtnClick();
+								}
+								jAlert(result.msg,'提示');
+							});
 						} else {
 							jAlert('该广告已发布无法再次发布','提示');
 							return;
@@ -236,18 +242,6 @@ Date.prototype.format = function(format){
 								<tr>
 									<td>标题：</td>
 									<td><input id="_title" name="_title" type="text" value="" style="width: 200px; height: 17px;" /></td>
-									<td width="10px">&nbsp;</td>
-								</tr>
-							</table>
-
-							<table border="0px" style="height: 40px;word-break: keep-all;white-space:nowrap;float: left;">
-								<tr>
-									<td>类型：</td>
-									<td>
-									<select id="adsType" name="adsType"  style="width: 120px;">
-										<option value="" <c:if test="${adsType==''}">selected="selected" </c:if>>全部</option>
-									</select>
-									</td>
 									<td width="10px">&nbsp;</td>
 								</tr>
 							</table>

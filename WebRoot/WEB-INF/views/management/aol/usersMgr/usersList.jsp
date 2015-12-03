@@ -66,13 +66,7 @@ Date.prototype.format = function(format){
 				});
 				var delId = "";
 				
-				var columns = [ {'text':'姓名','dataIndex':'name','render':nameRender,'width':'120px'},
-							    {'text':'性别','dataIndex':'sex','width':'60px'},
-							    {'text':'生日','dataIndex':'birthday','width':'80px'},
-							    {'text':'身高','dataIndex':'height','width':'60px'},
-							    {'text':'体重','dataIndex':'weight','width':'60px'},
-							    {'text':'手机号码','dataIndex':'mobile','width':'100px'},
-							    {'text':'邮箱','dataIndex':'email','width':'150px'},
+				var columns = [ {'text':'姓名','dataIndex':'name','width':'120px'},
 							    {'text':'注册时间','dataIndex':'bak5','render':regRender,'width':'120px'}
 							    ];
 				var arrayObj = [];
@@ -131,11 +125,6 @@ Date.prototype.format = function(format){
 				function searchBtnClick(){
 					var arrayObj = [
 						{"name":"usersname","value":$("#usersname").val()},
-						{"name":"regTimeQ","value":$("#regTimeQ").val()},
-						{"name":"regTimeZ","value":$("#regTimeZ").val()},
-						{"name":"sexType","value":$("#sexType").val()},
-						{"name":"mobile","value":$("#mobile").val()},
-						{"name":"birthday","value":$("#birthday").val()},
 					];
 					dataTableObj.search(arrayObj);
 				}
@@ -206,13 +195,6 @@ Date.prototype.format = function(format){
 		<div class="row-fluid z-ulnone" id="proList">
 			<div class="box span12">			
 				<!-- 操作按钮start -->
-				<div class="breadcrumb">
-					<li><a href="javascript:viewUserInfo();" class="button button-rounded button-flat button-tiny" style="width: 120px;"><i class="icon-6" style="width: 20px; height: 20px; line-height: 20px;"></i>&nbsp;查看用户信息</a></li>
-					<li style="color: #c5c5c5">|</li>
-					<li><a href="javascript:modifyRemark();" class="button button-rounded button-flat button-tiny" style="width: 100px;"><i class="icon-2" style="width: 20px; height: 20px; line-height: 20px;"></i>&nbsp;修改姓名</a></li>
-					<li style="color: #c5c5c5">|</li>
-					<li><a href="javascript:handAddDevice();" class="button button-rounded button-flat button-tiny" style="width: 100px;"><i class="icon-7" style="width: 20px; height: 20px; line-height: 20px;"></i>&nbsp;添加设备</a></li>
-				</div>
 				<!-- 操作按钮end -->
 				
 				<div class="box-content" style="margin: -15px;">
@@ -224,51 +206,12 @@ Date.prototype.format = function(format){
 									<td>姓名：</td>
 									<td><input id="usersname" name="usersname" type="text" value="" style="width: 90px; height: 15px;" /></td>
 									<td width="10px">&nbsp;</td>
-								</tr>
-							</table>
-							<table border="0px" style="height: 40px;word-break: keep-all;white-space:nowrap;float: left;">
-								<tr>
-									<td>手机号码：</td>
-									<td><input id="mobile" name="mobile" type="text" value="" style="width: 90px; height: 15px;" /></td>
-									<td width="10px">&nbsp;</td>
-								</tr>
-							</table>
-							<table border="0px" style="height: 40px;word-break: keep-all;white-space:nowrap;float: left;">
-								<tr>
-									<td>生日：</td>
-									<td><input id="birthday" name="birthday"  readonly  class="form_datetime"  required="required"  style="width: 90px"/></td>
-									<td width="10px">&nbsp;</td>
-								</tr>
-							</table>
-							<table border="0px" style="height: 40px;word-break: keep-all;white-space:nowrap;float: left;">
-								<tr>
-									<td>性别：</td>
-									<td>
-									<select id="sexType" name="sexType"  style="width: 60px;">
-										<option value="" <c:if test="${deviceType==''}">selected="selected" </c:if>>全部</option>
-										<option <c:if test="${sexType=='男'}">selected="selected" </c:if> value="男">男</option>
-										<option <c:if test="${sexType=='女'}">selected="selected" </c:if> value="女">女</option>
-									</select>
-									</td>
-									<td width="20px">&nbsp;</td>
-								</tr>
-							</table>
-							<table border="0px" style="height: 40px;word-break: keep-all;white-space:nowrap;float: left;">
-								<tr>
-									<td>注册时间范围：</td>
-									<td>
-										<input type="text" name="regTimeQ"  id="regTimeQ" value="${regTimeQ}" readonly   class="form_datetime"  required="required"  style="width: 90px"/>
-										~
-										<input type="text" name="regTimeZ"  id="regTimeZ"   readonly  class="form_datetime"  required="required"  style="width: 90px"/>
-									</td>
-									<td width="20px">&nbsp;</td>
 									<td height="40px" align="right">
 										<button id="btnSendTop" name="btnSendTop"  style="width:50px;cursor:pointer;"type="button" class="btn btn-primary" onclick="searchBtnClick()"></i>搜索</button>
 									</td>
 								</tr>
 							</table>
 						</form>
-						
 					</div>
 					<!-- 搜索条件end -->
 

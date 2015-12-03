@@ -20,6 +20,7 @@ import com.gcs.aol.entity.Adspublish;
 import com.gcs.aol.entity.Attach;
 import com.gcs.aol.entity.Imageads;
 import com.gcs.aol.service.IAdspublishManager;
+import com.gcs.aol.service.IImageadsManager;
 import com.gcs.aol.service.impl.AolUserManagerImpl;
 import com.gcs.aol.service.impl.ImageadsManagerImpl;
 import com.gcs.aol.utils.CommonUtils;
@@ -40,6 +41,9 @@ import com.gcs.utils.PageUtil;
 public class ImageadsController extends GenericEntityController<Imageads, Imageads, ImageadsManagerImpl> {
 	@Autowired
 	IAdspublishManager adsPublishManager;
+	
+	@Autowired
+	private IImageadsManager manager;
 	
 	private static final String ADSLIST = "management/aol/adsMgr/adsList";
 	private static final String ADDADS = "management/aol/adsMgr/editAds";
@@ -186,33 +190,13 @@ public class ImageadsController extends GenericEntityController<Imageads, Imagea
 	 * @return
 	 */
 	@RequestMapping(value = "/doPublishAds", method = RequestMethod.POST)
-	public String doPublishAds(HttpServletRequest request, HttpSession session, String orgChoose, String imageadsId){
+	@ResponseBody
+	public MsgJsonReturn doPublishAds(HttpServletRequest request, HttpSession session, String orgChoose, String imageadsId){
 		//获取登录用户
-		LoginUserVO loginuser = (LoginUserVO) request.getSession().getAttribute(SecurityConstants.LOGIN_USER);
-		
 		Imageads ads = this.getEntityManager().queryByPK(imageadsId);
-		Timestamp publish_time = new Timestamp(System.currentTimeMillis());
-		
-		String[] chooseids = orgChoose.split(",");
-		for(int i=0; i<chooseids.length; i++){
-			String chooseid = chooseids[i];
-			
-			chooseid = chooseid.replaceAll("U_", "").replaceAll("O_", "");
-			
-			Adspublish adsP = new Adspublish();
-			adsP.setImageadsId(ads.getImageadsId());
-			adsP.setReceiveId(chooseid);
-			adsP.setPublishTime(publish_time);
-			adsP.setPublishUser(loginuser.getUserId());
-			adsP.setPublishOrg(loginuser.getOrganiseId());
-			
-			adsPublishManager.save(adsP);
-		}
 		ads.setAdsState("1");
-		this.getEntityManager().save(ads);
-		
-		request.setAttribute("result", "{success:'true', msg:'发布成功'}");
-		return PUBLISHADS;
+		manager.save(ads);
+		return new MsgJsonReturn(true, "发布成功");
 	}
 	
 }

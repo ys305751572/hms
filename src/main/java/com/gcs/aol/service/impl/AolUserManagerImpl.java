@@ -179,48 +179,12 @@ public class AolUserManagerImpl extends GenericManagerImpl<AolUser, AolUserDAO> 
 		EntityManager em = entityManagerFactory.createEntityManager();
 		try {
 			String innerSql = "select u from ";
-			String sql = "AolUser u where  (u.bak4 is null or u.bak4='0') ";
+			String sql = "AolUser u where  1 = 1";
 			
 			if(StringUtils.isNotBlank(usersname)){
 				sql = sql + "and (u.name like '%" + usersname + "%' or u.remark like '%" + usersname + "%') ";
 			}
-			if(StringUtils.isNotBlank(sexType)){
-				sql = sql + "and u.sex = '"+ sexType +"'";
-			}
-			if(StringUtils.isNotBlank(mobile)){
-				sql = sql + "and u.mobile like '%"+ mobile +"%'";
-			}
-			if(StringUtils.isNotBlank(birthday)){
-				sql = sql + "and u.birthday = '"+ birthday +"'";
-			}
-			if(StringUtils.isNotBlank(sexType)){
-				sql = sql + "and u.sex = '"+ sexType +"'";
-			}
-			if(StringUtils.isNotBlank(regTimeQ)){
-				sql = sql + "and u.bak5 >= '" + regTimeQ + "' ";
-			}
-			if(StringUtils.isNotBlank(regTimeZ)){
-				sql = sql + "and u.bak5 <= '" + regTimeZ + "' ";
-			}
-			
 			List<AolUser> list = null;
-			if(!"00000000000000000000000000000000".equals(orgId)){
-				String userIdStr = "";
-				List<String> userIds = getUserIdsByOrg(orgId);
-				if(userIds != null){
-					for(int i=0; i<userIds.size(); i++){
-						userIdStr = userIdStr + "'" + userIds.get(i) + "',";
-					}
-				}
-				if(StringUtils.isNotBlank(userIdStr)){
-					userIdStr = userIdStr.substring(0, userIdStr.length()-1);
-				} else {
-					userIdStr = "'          '";
-				}
-				
-				sql = sql + "and u.user_id in (" + userIdStr + ")";
-			}
-			
 			Long count = queryCount(sql);
 			
 			Query query = em.createQuery(innerSql + sql + "order by u.bak5 DESC ");

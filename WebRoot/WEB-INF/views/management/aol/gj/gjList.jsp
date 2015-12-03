@@ -67,17 +67,17 @@ Date.prototype.format = function(format){
 				var delId = "";
 				
 				var columns = [ {'text':'标题','dataIndex':'title','width':'160px'},
-							    {'text':'描述','dataIndex':'adsDesc','render':adsDescRender,'width':'250px'},
-							    {'text':'广告链接','dataIndex':'adsLink','render':adsLinkRender,'width':'200px'},
-							    {'text':'状态','dataIndex':'adsState','render':adsStateRender,'width':'60px'},
-							    {'text':'代理商名称','dataIndex':'bak4','width':'60px'},
-							    {'text':'时间','dataIndex':'createTime','render':createtimeRender,'width':'100px'}
+				                {'text':'内容','dataIndex':'content','render':adsDescRender,'width':'250px'},
+							    {'text':'链接','dataIndex':'url','render':adsLinkRender,'width':'80px'},
+							    {'text':'状态','dataIndex':'is_list','render':isListRender,'width':'60px'},
+							    {'text':'类型','dataIndex':'type','render':typeRender,'width':'60px'},
+							    {'text':'创建时间','dataIndex':'createDate','render': createtimeRender,'width':'70px'}
 							    ];
 				var arrayObj = [];
 				var dataTableObj ;
 				$(function() {
 					dataTableObj  = new czTools.dataTable({"columns":columns,"render":"adsListDataTable",
-												"url":"${contextPath}/management/imageads/getAdsDataList",
+												"url":"${contextPath}/hms/gj/findAll",
 												"para":arrayObj,
 												"autoIframeHeight":false,
 												"showIndex":true,
@@ -100,33 +100,38 @@ Date.prototype.format = function(format){
 				    });
 					
 				});
-
-				function adsDescRender(row){
-					if(row.adsDesc.length > 50){
-						return row.adsDesc.substr(0, 50) + "......";
-					} else {
-						return row.adsDesc;
-					}
-				}
 				
-				function adsTypeRender(row){
-					var adstype = "";
-					if(row.adsType == "0"){
-						adstype = "";
-					} else if(row.adsType == "1"){
-						adstype = "";
+				function adsDescRender(row){
+					if(row.content.length > 50){
+						return row.content.substr(0, 50) + "......";
 					} else {
-						adstype = "";
+						return row.content;
 					}
-
-					return adstype;
 				}
 				
 				function adsLinkRender(row){
-					if(row.adsLink.length > 30){
-						return '<a  href="' + row.adsLink + '" target="_blank">' + row.adsLink.substr(0, 30) + "......" + '</a>';
+					if(row.url.length > 30){
+						return '<a  href="' + row.url + '" target="_blank">' + row.url.substr(0, 30) + "......" + '</a>';
 					} else {
-						return '<a  href="' + row.adsLink + '" target="_blank">' + row.adsLink + '</a>';
+						return '<a  href="' + row.url + '" target="_blank">' + row.url + '</a>';
+					}
+				}
+				
+				function typeRender(row){
+					var adstype = "";
+					if(row.type == "1"){
+						adstype = "公教";
+					} else {
+						adstype = "展览";
+					}
+					return adstype;
+				}
+				
+				function isListRender(row){
+					if(row.isList == "-1"){
+						return '未发布';
+					} else {
+						return '已发布';
 					}
 				}
 				
@@ -145,23 +150,23 @@ Date.prototype.format = function(format){
 
 				function createtimeRender(row){
 					var regtime = "";
-					if(row.createTime){
-						regtime = new Date(row.createTime).format("yyyy-MM-dd hh:mm:ss")
+					if(row.createDate){
+						regtime = new Date(row.createDate).format("yyyy-MM-dd hh:mm:ss")
 					}
 					return regtime;
 				}
 				
 				function searchBtnClick(){
 					var arrayObj = [
-						{"name":"_title","value":$("#_title").val()},
-						{"name":"adsType","value":$("#adsType").val()},
-						{"name":"adsState","value":$("#adsState").val()}
+						{"name":"title","value":$("#_title").val()},
+						{"name":"type","value":$("#type").val()},
+						{"name":"isList","value":$("#isList").val()}
 					];
 					dataTableObj.search(arrayObj);
 				}
 
 				function addAds(){
-					window.location.href = "${contextPath}/management/imageads/addads";
+					window.location.href = "${contextPath}/hms/gj/addPage";
 				}
 
 				function editAds(){
@@ -169,8 +174,8 @@ Date.prototype.format = function(format){
 						jAlert('请选择要修改的记录','提示');
 						return;
 					} else {
-						if(dataTableObj.getSelectedRow().adsState == 0){
-							window.location.href = "${contextPath}/management/imageads/editads?imageadsId="+dataTableObj.getSelectedRow().imageadsId;
+						if(dataTableObj.getSelectedRow().isList == -1){
+							window.location.href = "${contextPath}/hms/gj/editPage?gjId="+dataTableObj.getSelectedRow().id;
 						} else {
 							jAlert('该广告已发布无法修改','提示');
 							return;
@@ -183,10 +188,10 @@ Date.prototype.format = function(format){
 						jAlert('请选择要删除的记录','提示');
 						return;
 					} else {
-						var imageadsId = dataTableObj.getSelectedRow().imageadsId;
+						var gjId = dataTableObj.getSelectedRow().id;
 						jConfirm('是否确认删除该广告？',"提示",function(r){
 							if(r) { 
-								$.post("${contextPath}/management/imageads/deleteads",{"imageadsId":imageadsId},function(result){
+								$.post("${contextPath}/hms/gj/delete?gjId=" + gjId,function(result){
 									if(result.success){
 										searchBtnClick();
 									}
@@ -202,14 +207,24 @@ Date.prototype.format = function(format){
 						jAlert('请选择要发布的广告','提示');
 						return;
 					} else {
-						if(dataTableObj.getSelectedRow().adsState == 0){
-							window.location.href = "${contextPath}/management/imageads/publishads?imageadsId="+dataTableObj.getSelectedRow().imageadsId;
+						if(dataTableObj.getSelectedRow().isList == -1){
+							window.location.href = "${contextPath}/hms/gj/publish?gjId="+dataTableObj.getSelectedRow().id;
 						} else {
 							jAlert('该广告已发布无法再次发布','提示');
 							return;
 						}
 					}
 				}
+				
+				function detailAds(){
+					if(!dataTableObj.getSelectedRow()){
+						jAlert('请选择要修改的记录','提示');
+						return;
+					} else {
+						window.location.href = "${contextPath}/hms/gj/detailPage?gjId="+dataTableObj.getSelectedRow().id;
+					}
+				}
+				
 		</script>
 	</head>
 	<body>
@@ -223,6 +238,10 @@ Date.prototype.format = function(format){
 					<li><a href="javascript:editAds();" class="button button-rounded button-flat button-tiny" style="width: 60px;"><i class="icon-2" style="width: 20px; height: 20px; line-height: 20px;"></i>&nbsp;修改</a></li>
 					<li style="color: #c5c5c5">|</li>
 					<li><a href="javascript:deleteAds();" class="button button-rounded button-flat button-tiny" style="width: 60px;"><i class="icon-3" style="width: 20px; height: 20px; line-height: 20px;"></i>&nbsp;删除</a></li>
+					<!-- 
+					<li style="color: #c5c5c5">|</li>
+					<li><a href="javascript:detailAds();" class="button button-rounded button-flat button-tiny" style="width: 60px;"><i class="icon-4" style="width: 20px; height: 20px; line-height: 20px;"></i>&nbsp;详情</a></li>
+					 -->
 					<li style="color: #c5c5c5">|</li>
 					<li><a href="javascript:publishAds();" class="button button-rounded button-flat button-tiny" style="width: 60px;"><i class="icon-13" style="width: 20px; height: 20px; line-height: 20px;"></i>&nbsp;发布</a></li>
 				</div>
@@ -244,8 +263,10 @@ Date.prototype.format = function(format){
 								<tr>
 									<td>类型：</td>
 									<td>
-									<select id="adsType" name="adsType"  style="width: 120px;">
-										<option value="" <c:if test="${adsType==''}">selected="selected" </c:if>>全部</option>
+									<select id="type" name="type"  style="width: 120px;">
+										<option value="" <c:if test="${isList==''}">selected="selected" </c:if>>全部</option>
+										<option <c:if test="${type=='1'}">selected="selected" </c:if> value="1">公教</option>
+										<option <c:if test="${isList=='2'}">selected="selected" </c:if> value="2">展览</option>
 									</select>
 									</td>
 									<td width="10px">&nbsp;</td>
@@ -256,10 +277,10 @@ Date.prototype.format = function(format){
 								<tr>
 									<td>状态：</td>
 									<td>
-									<select id="adsState" name="adsState"  style="width: 120px;">
-										<option value="" <c:if test="${adsState==''}">selected="selected" </c:if>>全部</option>
-										<option <c:if test="${adsState=='1'}">selected="selected" </c:if> value="1">已发布</option>
-										<option <c:if test="${adsState=='0'}">selected="selected" </c:if> value="0">未发布</option>
+									<select id="isList" name="isList"  style="width: 120px;">
+										<option value="" <c:if test="${isList==''}">selected="selected" </c:if>>全部</option>
+										<option <c:if test="${isList=='1'}">selected="selected" </c:if> value="1">已发布</option>
+										<option <c:if test="${isList=='-1'}">selected="selected" </c:if> value="-1">未发布</option>
 									</select>
 									</td>
 									<td width="20px">&nbsp;</td>

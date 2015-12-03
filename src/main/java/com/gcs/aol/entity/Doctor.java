@@ -1,6 +1,6 @@
 package com.gcs.aol.entity;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,7 +51,7 @@ public class Doctor {
 
 	@Column(name = "BIRTHDAY")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Timestamp birthday;
+	private Date birthday;
 
 	@Column(name = "ONLINE")
 	private String online; // 在诊时间
@@ -139,11 +139,11 @@ public class Doctor {
 		this.level = level;
 	}
 
-	public Timestamp getBirthday() {
+	public Date getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Timestamp birthday) {
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 
